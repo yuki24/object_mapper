@@ -1,0 +1,23 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Ruby",
+      "feature_list": [
+        "Elegant",
+        "Natural to read and easy to write",
+        "Zero bugs"
+      ],
+      "_links": {
+        "self": {
+          "href": "https://www.ruby-lang.org/en/about/"
+        }
+      }
+    }
+  ],
+  "_links": {
+    "self": {
+      "href": "https://www.ruby-lang.org/"
+    }
+  }
+}
