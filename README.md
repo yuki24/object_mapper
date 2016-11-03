@@ -69,12 +69,16 @@ events = ObjectMapper
             .convert(data, to: Array(Event))
 
 event = fvents.first
+
 event.class        # => Event
 event.repo.class   # => Repo
 event.author.class # => Author
+
 event.type         # => "New repository created"
 event.created_at   # => "2011-09-06T17:26:27Z"
+event.repo.id      # => 3
 event.repo.name    # => "yuki24/object_mapper"
+event.author.id    # => 1
 event.author.login # => "yuki24"
 ```
 
