@@ -53,4 +53,13 @@ class ObjectMapperTest < Minitest::Test
     assert_equal "https://www.ruby-lang.org/",          collection[:_links][:self][:href]
     assert_equal "https://www.ruby-lang.org/en/about/", collection[:products][0][:_links][:self][:href]
   end
+
+  def test_argument_error_message_includs_class_name
+    error = assert_raises(ArgumentError) do
+      ObjectMapper.new({}).convert(@hash, to: Product)
+    end
+
+    assert_equal "unknown keyword: products (class: `Product')", error.message
+    assert_match(/test\/fixtures\/plain_old_ruby_objects\.rb/, error.backtrace.first)
+  end
 end

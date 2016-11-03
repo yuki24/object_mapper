@@ -16,7 +16,11 @@ class ObjectMapper
         result[key] = convert(value, to: @mapping[klass][key] || value.class)
       end
 
-      klass.new(result)
+      begin
+        klass.new(result)
+      rescue ArgumentError => e
+        raise e, "#{e} (class: `#{klass}')", e.backtrace
+      end
     else
       result
     end
