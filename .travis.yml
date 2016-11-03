@@ -1,5 +1,23 @@
-sudo: false
 language: ruby
+script:   bundle exec rake
+cache:    bundler
+sudo:     false
+
+before_install: gem install bundler
+
 rvm:
+  - 2.1.10
+  - 2.2.5
   - 2.3.1
-before_install: gem install bundler -v 1.13.6
+  - ruby-head
+  - jruby-9.1.5.0
+  - jruby-head
+  - rbx
+
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: jruby-9.1.5.0
+    - rvm: jruby-head
+    - rvm: rbx
+  fast_finish: true

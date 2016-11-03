@@ -1,4 +1,4 @@
-# Object Mapper in Ruby
+# Object Mapper in Ruby [![Build Status](https://travis-ci.org/yuki24/object_mapper.svg?branch=master)](https://travis-ci.org/yuki24/object_mapper)
 
 Say goodbye to Ruby hash objects 👋
 
