@@ -1,8 +1,6 @@
-# ObjectMapper
+# Object Mapper in Ruby
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/object_mapper`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Say goodbye to Ruby hash objects 👋
 
 ## Installation
 
@@ -12,30 +10,84 @@ Add this line to your application's Gemfile:
 gem 'object_mapper'
 ```
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install object_mapper
-
 ## Usage
 
-TODO: Write usage instructions here
+If you have the plain old Ruby objects below:
 
-## Development
+```ruby
+class Event
+  attr_reader :id, :type, :repo, :author, :created_at
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+  def initialize(id: nil, type: nil, repo: nil, author: nil, created_at: nil)
+    @id, @type, @repo, @author, @created_at = id, type, repo, author, created_at
+  end
+end
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+class Repo
+  attr_reader :id, :name
+
+  def initialize(id: nil, name: nil)
+    @id, @name = id, name
+  end
+end
+
+class Author
+  attr_reader :id, :login
+
+  def initialize(id: nil, login: nil)
+    @id, @login = id, login
+  end
+end
+```
+
+Then you can convert JSON (or Ruby hashes/arrays) to the Ruby objects above:
+
+```ruby
+require 'json'
+require 'object_mapper'
+
+data = JSON.parse(<<-DATA, symbolize_names: true)
+[
+  {
+    "id": "12345",
+    "type": "New repository created",
+    "repo": {
+      "id": 3,
+      "name": "yuki24/object_mapper"
+    },
+    "author": {
+      "id": 1,
+      "login": "yuki24"
+    },
+    "created_at": "2011-09-06T17:26:27Z"
+  }
+]
+DATA
+
+events = ObjectMapper
+            .new(Event => { author: Author, repo: Repo })
+            .convert(data, to: Array(Event))
+
+event = fvents.first
+event.class        # => Event
+event.repo.class   # => Repo
+event.author.class # => Author
+event.type         # => "New repository created"
+event.created_at   # => "2011-09-06T17:26:27Z"
+event.repo.name    # => "yuki24/object_mapper"
+event.author.login # => "yuki24"
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/object_mapper. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+1. Fork it (http://github.com/yuki24/object_mapper/fork)
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Make sure all tests pass (`bundle exec rake`)
+5. Push to the branch (`git push origin my-new-feature`)
+6. Create new Pull Request
 
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
+Copyright (c) 2016 Yuki Nishijima. See MIT-LICENSE for further details.
