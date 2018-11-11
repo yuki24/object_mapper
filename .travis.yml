@@ -6,18 +6,19 @@ sudo:     false
 before_install: gem install bundler
 
 rvm:
-  - 2.2.5
-  - 2.3.3
-  - 2.4.0
+  - 2.2.10
+  - 2.3.8
+  - 2.4.5
+  - 2.5.3
   - ruby-head
-  - jruby-9.1.7.0
+  - jruby-9.2.3.0
   - jruby-head
   - rbx
 
 matrix:
   allow_failures:
     - rvm: ruby-head
-    - rvm: jruby-9.1.7.0
+    - rvm: jruby-9.2.3.0
     - rvm: jruby-head
     - rvm: rbx
   fast_finish: true
